@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - FloodGuard IoT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-water me-2"></i>
+                FloodGuard IoT
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="/about">About</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/team">Team</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/login">Login</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="page-hero bg-primary text-white">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold mb-4">About FloodGuard IoT</h1>
+                    <p class="lead">Understanding our smart flood monitoring and mitigation system</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Project Overview -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row align-items-center mb-5">
+                <div class="col-lg-6">
+                    <h2 class="fw-bold mb-4">Project Overview</h2>
+                    <p class="lead text-primary">Smart IoT Flood Monitoring and Automated Flood Gate System</p>
+                    <p>Our innovative flood monitoring system combines cutting-edge IoT technology with automated response mechanisms to provide comprehensive flood detection and mitigation capabilities. The system continuously monitors water levels and automatically responds to flood threats, ensuring community safety and property protection.</p>
+                    <div class="key-features mt-4">
+                        <h5 class="fw-bold">Key Objectives:</h5>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success me-2"></i>Real-time water level monitoring</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Automated flood gate control</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Intelligent alert system</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Historical data analysis</li>
+                            <li><i class="fas fa-check text-success me-2"></i>Remote monitoring capabilities</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="system-diagram">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="component-card text-center p-3">
+                                    <i class="fas fa-microchip fa-2x text-primary mb-2"></i>
+                                    <h6>NodeMCU ESP8266</h6>
+                                    <small class="text-muted">Main Controller</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="component-card text-center p-3">
+                                    <i class="fas fa-satellite-dish fa-2x text-info mb-2"></i>
+                                    <h6>Ultrasonic Sensor</h6>
+                                    <small class="text-muted">Water Level Detection</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="component-card text-center p-3">
+                                    <i class="fas fa-cog fa-2x text-warning mb-2"></i>
+                                    <h6>Servo Motor</h6>
+                                    <small class="text-muted">Gate Control</small>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="component-card text-center p-3">
+                                    <i class="fas fa-bell fa-2x text-danger mb-2"></i>
+                                    <h6>Alert System</h6>
+                                    <small class="text-muted">Local & Remote</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold">How It Works</h2>
+                    <p class="lead text-muted">Understanding the flood detection and mitigation process</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <div class="process-timeline">
+                        <div class="row g-4">
+                            <div class="col-md-6 col-lg-3">
+                                <div class="process-card">
+                                    <div class="process-number">1</div>
+                                    <div class="process-icon">
+                                        <i class="fas fa-tint"></i>
+                                    </div>
+                                    <h5>Water Detection</h5>
+                                    <p>Ultrasonic sensor continuously measures distance between sensor and water surface, providing real-time water level data.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="process-card">
+                                    <div class="process-number">2</div>
+                                    <div class="process-icon">
+                                        <i class="fas fa-wifi"></i>
+                                    </div>
+                                    <h5>Data Transmission</h5>
+                                    <p>NodeMCU ESP8266 processes sensor data and transmits it to the cloud server via WiFi connection.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="process-card">
+                                    <div class="process-number">3</div>
+                                    <div class="process-icon">
+                                        <i class="fas fa-brain"></i>
+                                    </div>
+                                    <h5>Intelligent Analysis</h5>
+                                    <p>Server analyzes water level data against predefined thresholds and triggers appropriate alerts and responses.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-lg-3">
+                                <div class="process-card">
+                                    <div class="process-number">4</div>
+                                    <div class="process-icon">
+                                        <i class="fas fa-shield-alt"></i>
+                                    </div>
+                                    <h5>Automated Response</h5>
+                                    <p>System automatically activates flood gates, triggers alarms, and sends notifications when flood conditions are detected.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Hardware Components -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold">Hardware Components</h2>
+                    <p class="lead text-muted">Detailed breakdown of system components</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-4">
+                    <div class="hardware-card">
+                        <div class="hardware-icon">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h5>NodeMCU ESP8266</h5>
+                        <p><strong>Function:</strong> Main microcontroller unit</p>
+                        <p><strong>Features:</strong></p>
+                        <ul class="text-start">
+                            <li>WiFi connectivity</li>
+                            <li>GPIO pins for sensors</li>
+                            <li>Low power consumption</li>
+                            <li>Arduino IDE compatible</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="hardware-card">
+                        <div class="hardware-icon">
+                            <i class="fas fa-satellite-dish"></i>
+                        </div>
+                        <h5>Ultrasonic Sensor (HC-SR04)</h5>
+                        <p><strong>Function:</strong> Distance measurement</p>
+                        <p><strong>Features:</strong></p>
+                        <ul class="text-start">
+                            <li>Range: 2cm to 400cm</li>
+                            <li>±3mm accuracy</li>
+                            <li>40kHz ultrasonic frequency</li>
+                            <li>Low power operation</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="hardware-card">
+                        <div class="hardware-icon">
+                            <i class="fas fa-cog"></i>
+                        </div>
+                        <h5>Servo Motor (SG90)</h5>
+                        <p><strong>Function:</strong> Flood gate control</p>
+                        <p><strong>Features:</strong></p>
+                        <ul class="text-start">
+                            <li>180° rotation angle</li>
+                            <li>Digital servo control</li>
+                            <li>High precision positioning</li>
+                            <li>Reliable operation</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="hardware-card">
+                        <div class="hardware-icon">
+                            <i class="fas fa-volume-up"></i>
+                        </div>
+                        <h5>Buzzer</h5>
+                        <p><strong>Function:</strong> Local alert system</p>
+                        <p><strong>Features:</strong></p>
+                        <ul class="text-start">
+                            <li>High decibel output</li>
+                            <li>Low power consumption</li>
+                            <li>Instant activation</li>
+                            <li>Weather resistant</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="hardware-card">
+                        <div class="hardware-icon">
+                            <i class="fas fa-tv"></i>
+                        </div>
+                        <h5>16x2 LCD Display</h5>
+                        <p><strong>Function:</strong> Local data display</p>
+                        <p><strong>Features:</strong></p>
+                        <ul class="text-start">
+                            <li>Real-time readings</li>
+                            <li>Clear visibility</li>
+                            <li>Backlight support</li>
+                            <li>I2C interface</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Water Level Logic -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold">Water Level Detection Logic</h2>
+                    <p class="lead text-muted">How the system determines flood risk levels</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="logic-card normal-level">
+                        <div class="logic-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <h4>Normal Level</h4>
+                        <div class="logic-threshold">
+                            <h3>>80 cm</h3>
+                            <small>Distance from sensor</small>
+                        </div>
+                        <div class="logic-actions">
+                            <p><strong>Actions:</strong></p>
+                            <ul>
+                                <li>Green status indicator</li>
+                                <li>Normal monitoring mode</li>
+                                <li>Flood gate remains closed</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="logic-card warning-level">
+                        <div class="logic-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h4>Warning Level</h4>
+                        <div class="logic-threshold">
+                            <h3>50-80 cm</h3>
+                            <small>Distance from sensor</small>
+                        </div>
+                        <div class="logic-actions">
+                            <p><strong>Actions:</strong></p>
+                            <ul>
+                                <li>Yellow alert status</li>
+                                <li>Warning notifications</li>
+                                <li>Increased monitoring</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="logic-card danger-level">
+                        <div class="logic-icon">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <h4>Danger Level</h4>
+                        <div class="logic-threshold">
+                            <h3><50 cm</h3>
+                            <small>Distance from sensor</small>
+                        </div>
+                        <div class="logic-actions">
+                            <p><strong>Actions:</strong></p>
+                            <ul>
+                                <li>Red danger alert</li>
+                                <li>Buzzer activation</li>
+                                <li>Auto gate opening</li>
+                                <li>Emergency notifications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Benefits -->
+    <section class="py-5">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="fw-bold">System Benefits</h2>
+                    <p class="lead text-muted">Why choose our IoT flood monitoring solution</p>
+                </div>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="benefit-card text-center">
+                        <i class="fas fa-clock fa-3x text-primary mb-3"></i>
+                        <h5>Real-time Monitoring</h5>
+                        <p>Continuous 24/7 monitoring with instant data updates and immediate response to changing conditions.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="benefit-card text-center">
+                        <i class="fas fa-robot fa-3x text-success mb-3"></i>
+                        <h5>Automated Response</h5>
+                        <p>Intelligent automation eliminates human delay in critical flood situations, ensuring rapid protective action.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="benefit-card text-center">
+                        <i class="fas fa-dollar-sign fa-3x text-warning mb-3"></i>
+                        <h5>Cost Effective</h5>
+                        <p>Low-cost IoT solution provides enterprise-level flood protection without expensive infrastructure.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="benefit-card text-center">
+                        <i class="fas fa-mobile-alt fa-3x text-info mb-3"></i>
+                        <h5>Remote Access</h5>
+                        <p>Monitor and control the system from anywhere using web dashboard or mobile-responsive interface.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5><i class="fas fa-water me-2"></i>FloodGuard IoT</h5>
+                    <p class="mb-0">Smart flood monitoring for safer communities</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">Team Pixel Hunters &copy; 2024</p>
+                    <p class="mb-0">M. Kumarasamy College of Engineering</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

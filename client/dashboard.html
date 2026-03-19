@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - FloodGuard IoT</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body class="dashboard-page">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/">
+                <i class="fas fa-water me-2"></i>
+                FloodGuard IoT
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-2"></i>
+                            <span id="userName">Loading...</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#profileModal">
+                                <i class="fas fa-user me-2"></i>Profile
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#" onclick="logout()">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Alert Bar -->
+    <div id="alertBar" class="alert-bar d-none">
+        <div class="container-fluid d-flex justify-content-between align-items-center">
+            <div>
+                <i id="alertIcon" class="fas fa-exclamation-triangle me-2"></i>
+                <span id="alertMessage"></span>
+            </div>
+            <button type="button" class="btn-close btn-close-white" onclick="closeAlert()"></button>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2 sidebar">
+                <div class="d-flex flex-column p-3">
+                    <h6 class="text-muted text-uppercase fw-bold mb-3">Dashboard</h6>
+                    <ul class="nav nav-pills flex-column mb-auto">
+                        <li class="nav-item">
+                            <a href="#overview" class="nav-link active" id="overviewTab">
+                                <i class="fas fa-tachometer-alt me-2"></i>
+                                Overview
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#monitoring" class="nav-link" id="monitoringTab">
+                                <i class="fas fa-chart-line me-2"></i>
+                                Monitoring
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#alerts" class="nav-link" id="alertsTab">
+                                <i class="fas fa-bell me-2"></i>
+                                Alerts
+                                <span id="alertBadge" class="badge bg-danger ms-2 d-none">0</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#control" class="nav-link" id="controlTab">
+                                <i class="fas fa-cogs me-2"></i>
+                                Control
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#dataset" class="nav-link" id="datasetTab">
+                                <i class="fas fa-upload me-2"></i>
+                                Dataset Upload
+                            </a>
+                        </li>
+                        <li>
+                            <a href="#ml" class="nav-link" id="mlTab">
+                                <i class="fas fa-brain me-2"></i>
+                                ML Predictions
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10 main-content">
+                <!-- Overview Section -->
+                <div id="overviewSection" class="content-section">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold">System Overview</h2>
+                        <div class="d-flex align-items-center text-muted">
+                            <i class="fas fa-sync-alt me-2" id="refreshIcon"></i>
+                            <span>Last updated: <span id="lastUpdated">--</span></span>
+                        </div>
+                    </div>
+
+                    <!-- Status Cards -->
+                    <div class="row g-4 mb-5">
+                        <div class="col-md-6 col-lg-3">
+                            <div class="status-card" id="waterLevelCard">
+                                <div class="card-icon">
+                                    <i class="fas fa-tint"></i>
+                                </div>
+                                <div class="card-content">
+                                    <h3 id="currentWaterLevel">--</h3>
+                                    <p>Water Level (cm)</p>
+                                    <small id="waterLevelChange" class="text-muted">--</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="status-card" id="distanceCard">
+                                <div class="card-icon">
+                                    <i class="fas fa-ruler"></i>
+                                </div>
+                                <div class="card-content">
+                                    <h3 id="currentDistance">--</h3>
+                                    <p>Distance (cm)</p>
+                                    <small id="distanceChange" class="text-muted">--</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="status-card" id="systemStatusCard">
+                                <div class="card-icon">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <div class="card-content">
+                                    <h3 id="systemStatus">--</h3>
+                                    <p>System Status</p>
+                                    <small id="statusTime" class="text-muted">--</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-3">
+                            <div class="status-card" id="servoCard">
+                                <div class="card-icon">
+                                    <i class="fas fa-door-open"></i>
+                                </div>
+                                <div class="card-content">
+                                    <h3 id="servoStatus">--</h3>
+                                    <p>Flood Gate</p>
+                                    <small id="servoTime" class="text-muted">--</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Water Level Gauge -->
+                    <div class="row mb-5">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-tachometer-alt me-2"></i>
+                                        Water Level Gauge
+                                    </h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <canvas id="gaugeChart" width="300" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Quick Stats
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row text-center">
+                                        <div class="col-4">
+                                            <div class="stat-item">
+                                                <h4 id="totalReadings">--</h4>
+                                                <small class="text-muted">Total Readings</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="stat-item">
+                                                <h4 id="alertsToday">--</h4>
+                                                <small class="text-muted">Alerts Today</small>
+                                            </div>
+                                        </div>
+                                        <div class="col-4">
+                                            <div class="stat-item">
+                                                <h4 id="avgWaterLevel">--</h4>
+                                                <small class="text-muted">Avg Level</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Monitoring Section -->
+                <div id="monitoringSection" class="content-section d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold">Water Level Monitoring</h2>
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="timeRange" id="range24h" value="24" checked>
+                            <label class="btn btn-outline-primary" for="range24h">24h</label>
+                            
+                            <input type="radio" class="btn-check" name="timeRange" id="range7d" value="168">
+                            <label class="btn btn-outline-primary" for="range7d">7d</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-chart-line me-2"></i>
+                                        Water Level Trends
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="waterLevelChart" height="100"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-table me-2"></i>
+                                        Recent Readings
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover" id="readingsTable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Timestamp</th>
+                                                    <th>Water Level</th>
+                                                    <th>Distance</th>
+                                                    <th>Status</th>
+                                                    <th>Gate Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="readingsTableBody">
+                                                <tr>
+                                                    <td colspan="5" class="text-center text-muted">Loading data...</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts Section -->
+                <div id="alertsSection" class="content-section d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold">System Alerts</h2>
+                        <button class="btn btn-outline-danger" onclick="clearAlerts()">
+                            <i class="fas fa-trash me-2"></i>
+                            Clear Old Alerts
+                        </button>
+                    </div>
+
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <div class="card text-center border-warning">
+                                <div class="card-body">
+                                    <i class="fas fa-exclamation-triangle fa-2x text-warning mb-2"></i>
+                                    <h3 id="warningAlerts">--</h3>
+                                    <p class="mb-0">Warning Alerts</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-danger">
+                                <div class="card-body">
+                                    <i class="fas fa-exclamation-circle fa-2x text-danger mb-2"></i>
+                                    <h3 id="dangerAlerts">--</h3>
+                                    <p class="mb-0">Danger Alerts</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card text-center border-info">
+                                <div class="card-body">
+                                    <i class="fas fa-clock fa-2x text-info mb-2"></i>
+                                    <h3 id="recentAlerts">--</h3>
+                                    <p class="mb-0">Last 24h</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">
+                                <i class="fas fa-list me-2"></i>
+                                Alert History
+                            </h5>
+                        </div>
+                        <div class="card-body">
+                            <div id="alertsList">
+                                <!-- Alerts will be loaded here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Control Section -->
+                <div id="controlSection" class="content-section d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold">System Control</h2>
+                        <div class="badge bg-info">Manual Override Available</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-door-open me-2"></i>
+                                        Flood Gate Control
+                                    </h5>
+                                </div>
+                                <div class="card-body text-center">
+                                    <div class="mb-4">
+                                        <div class="gate-visual" id="gateVisual">
+                                            <i class="fas fa-door-closed fa-4x" id="gateIcon"></i>
+                                            <p class="mt-2 fw-bold" id="gateStatusText">Gate Closed</p>
+                                        </div>
+                                    </div>
+                                    <div class="d-grid gap-2">
+                                        <button class="btn btn-success" onclick="controlServo('open')" id="openGateBtn">
+                                            <i class="fas fa-door-open me-2"></i>
+                                            Open Gate
+                                        </button>
+                                        <button class="btn btn-danger" onclick="controlServo('close')" id="closeGateBtn">
+                                            <i class="fas fa-door-closed me-2"></i>
+                                            Close Gate
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-history me-2"></i>
+                                        Control History
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="controlHistory">
+                                        <!-- Control history will be loaded here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dataset Upload Section -->
+                <div id="datasetSection" class="content-section d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold">Dataset Upload & Analysis</h2>
+                        <div class="badge bg-info">CSV Format Supported</div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-upload me-2"></i>
+                                        Upload Dataset
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="datasetUploadForm" enctype="multipart/form-data">
+                                        <div class="mb-3">
+                                            <label for="datasetFile" class="form-label">Choose CSV File</label>
+                                            <input type="file" class="form-control" id="datasetFile" name="dataset" accept=".csv" required>
+                                            <div class="form-text">Upload a CSV file with columns: timestamp, water_level, distance, status</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="datasetName" class="form-label">Dataset Name</label>
+                                            <input type="text" class="form-control" id="datasetName" name="name" placeholder="Enter dataset name" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="datasetDescription" class="form-label">Description</label>
+                                            <textarea class="form-control" id="datasetDescription" name="description" rows="3" placeholder="Brief description of the dataset"></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-upload me-2"></i>
+                                            Upload Dataset
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        CSV Format Guide
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <h6>Required Columns:</h6>
+                                    <ul class="list-unstyled">
+                                        <li><code>timestamp</code> - Date and time</li>
+                                        <li><code>water_level</code> - Water level in cm</li>
+                                        <li><code>distance</code> - Sensor distance</li>
+                                        <li><code>status</code> - normal/warning/danger</li>
+                                    </ul>
+                                    <h6>Example:</h6>
+                                    <pre class="bg-light p-2 rounded"><code>timestamp,water_level,distance,status
+2024-01-15 10:00:00,25.5,174.5,normal
+2024-01-15 10:30:00,28.3,171.7,warning</code></pre>
+                                    <button class="btn btn-outline-primary btn-sm" onclick="downloadSampleDataset()">
+                                        <i class="fas fa-download me-1"></i>
+                                        Download Sample
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-chart-area me-2"></i>
+                                        Dataset Visualization
+                                    </h5>
+                                    <select class="form-select w-auto" id="datasetSelector">
+                                        <option value="">Select a dataset...</option>
+                                    </select>
+                                </div>
+                                <div class="card-body">
+                                    <div id="datasetChartContainer" style="display: none;">
+                                        <canvas id="datasetChart" height="100"></canvas>
+                                    </div>
+                                    <div id="noDatasetMessage" class="text-center text-muted py-5">
+                                        <i class="fas fa-chart-line fa-3x mb-3"></i>
+                                        <p>Upload a dataset to view visualization</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-table me-2"></i>
+                                        Dataset Preview
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="datasetTableContainer" style="display: none;">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover" id="datasetTable">
+                                                <thead id="datasetTableHead"></thead>
+                                                <tbody id="datasetTableBody"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div id="noDatasetTableMessage" class="text-center text-muted py-5">
+                                        <i class="fas fa-table fa-3x mb-3"></i>
+                                        <p>Select a dataset to view data</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ML Predictions Section -->
+                <div id="mlSection" class="content-section d-none">
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="fw-bold">ML Flood Predictions</h2>
+                        <div class="badge bg-warning">AI-Powered Forecasting</div>
+                    </div>
+
+                    <!-- Prediction Overview Cards -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card text-center border-info">
+                                <div class="card-body">
+                                    <i class="fas fa-eye fa-2x text-info mb-2"></i>
+                                    <h5 id="predictionHorizon">--</h5>
+                                    <p class="mb-0 small">Prediction Range</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center border-warning">
+                                <div class="card-body">
+                                    <i class="fas fa-percentage fa-2x text-warning mb-2"></i>
+                                    <h5 id="floodProbability">--</h5>
+                                    <p class="mb-0 small">Flood Risk</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center border-danger">
+                                <div class="card-body">
+                                    <i class="fas fa-clock fa-2x text-danger mb-2"></i>
+                                    <h5 id="nextFloodTime">--</h5>
+                                    <p class="mb-0 small">Next Risk Window</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card text-center border-success">
+                                <div class="card-body">
+                                    <i class="fas fa-shield-alt fa-2x text-success mb-2"></i>
+                                    <h5 id="modelAccuracy">--</h5>
+                                    <p class="mb-0 small">Model Accuracy</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-header d-flex justify-content-between align-items-center">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-chart-line me-2"></i>
+                                        Flood Risk Prediction Timeline
+                                    </h5>
+                                    <div class="btn-group" role="group">
+                                        <input type="radio" class="btn-check" name="predictionRange" id="range24h" value="24" checked>
+                                        <label class="btn btn-outline-primary btn-sm" for="range24h">24h</label>
+                                        
+                                        <input type="radio" class="btn-check" name="predictionRange" id="range72h" value="72">
+                                        <label class="btn btn-outline-primary btn-sm" for="range72h">72h</label>
+                                        
+                                        <input type="radio" class="btn-check" name="predictionRange" id="range7d" value="168">
+                                        <label class="btn btn-outline-primary btn-sm" for="range7d">7d</label>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div id="predictionChartContainer">
+                                        <canvas id="predictionChart" height="100"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-robot me-2"></i>
+                                        Model Control
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="mb-3">
+                                        <label class="form-label">Training Data Range</label>
+                                        <select class="form-select" id="trainingDataRange">
+                                            <option value="7">Last 7 days</option>
+                                            <option value="30" selected>Last 30 days</option>
+                                            <option value="90">Last 90 days</option>
+                                            <option value="0">All available data</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Prediction Model</label>
+                                        <select class="form-select" id="predictionModel">
+                                            <option value="linear_regression" selected>Linear Regression</option>
+                                            <option value="moving_average">Moving Average</option>
+                                            <option value="trend_analysis">Trend Analysis</option>
+                                        </select>
+                                    </div>
+                                    <div class="d-grid gap-2 mb-3">
+                                        <button class="btn btn-primary" onclick="trainModel()" id="trainModelBtn">
+                                            <i class="fas fa-play me-2"></i>
+                                            Train Model
+                                        </button>
+                                        <button class="btn btn-success" onclick="generatePredictions()" id="predictBtn">
+                                            <i class="fas fa-magic me-2"></i>
+                                            Generate Predictions
+                                        </button>
+                                    </div>
+                                    <div class="alert alert-info" id="modelStatus">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Ready to train model with historical data.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-exclamation-triangle me-2"></i>
+                                        Risk Alerts & Recommendations
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="riskAlerts">
+                                        <div class="text-center text-muted py-4">
+                                            <i class="fas fa-brain fa-2x mb-2"></i>
+                                            <p>Train the model to get risk predictions</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">
+                                        <i class="fas fa-chart-bar me-2"></i>
+                                        Model Performance
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div id="modelMetrics">
+                                        <div class="row text-center">
+                                            <div class="col-6">
+                                                <div class="border-end">
+                                                    <h6 id="modelPrecision">--</h6>
+                                                    <small class="text-muted">Precision</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6 id="modelRecall">--</h6>
+                                                <small class="text-muted">Recall</small>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="row text-center">
+                                            <div class="col-6">
+                                                <div class="border-end">
+                                                    <h6 id="modelF1Score">--</h6>
+                                                    <small class="text-muted">F1 Score</small>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <h6 id="dataPoints">--</h6>
+                                                <small class="text-muted">Training Points</small>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                                <small>Model Confidence</small>
+                                                <small id="confidencePercent">--</small>
+                                            </div>
+                                            <div class="progress">
+                                                <div class="progress-bar" id="confidenceBar" style="width: 0%"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <i class="fas fa-user me-2"></i>
+                        User Profile
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="profileForm">
+                        <div class="mb-3">
+                            <label for="profileName" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="profileName" name="name">
+                        </div>
+                        <div class="mb-3">
+                            <label for="profileEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="profileEmail" name="email" readonly>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="updateProfile()">Update Profile</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/dashboard.js"></script>
+</body>
+</html>
